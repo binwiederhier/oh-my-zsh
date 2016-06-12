@@ -47,12 +47,18 @@ else
   fi
 fi
 CRUNCH_DIR_="$CRUNCH_DIR_COLOR%~\$(git_prompt_info) "
-CRUNCH_PROMPT="$CRUNCH_BRACKET_COLOR➭ "
+CRUNCH_PROMPT="$CRUNCH_BRACKET_COLOR%{$fg_bold[red]%}❯%{$fg_bold[yellow]%}❯%{$fg_bold[green]%}❯ "
 
 # Put it all together!
-local ret_status="%(?:%{$fg[green]%}%? :%{$fg[red]%}%? )"
-#local exit_code="%(?,,C:%{$fg[red]%}%?%{$reset_color%})"
-PROMPT="${ret_status}$FG[244]%n@%m$CRUNCH_TIME_$CRUNCH_RVM_$CRUNCH_DIR_$CRUNCH_PROMPT%{$reset_color%}"
+local exit_code="%(?:%{$fg[green]%}%? :%{$fg[red]%}%? )"
+
+if [ "$(id -u)" = "0" ]; then
+	local user_str="%{$fg_bold[red]%}%n!%{$reset_color%}"
+else
+	local user_str="$FG[244]%n"
+fi
+
+PROMPT="${exit_code}${user_str}$CRUNCH_TIME_$CRUNCH_RVM_$CRUNCH_DIR_$CRUNCH_PROMPT%{$reset_color%}"
 
 #PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
 
